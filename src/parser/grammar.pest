@@ -1,0 +1,28 @@
+// PEST feature to automaticaly skip whitespaces
+WHITESPACE = _{ " " }
+
+comment = { "#" ~ (ASCII_ALPHA | ASCII_DIGIT | ".")* }
+// Types
+quote = { "\""|"'" }
+string = { quote ~ (ASCII_ALPHA | ASCII_DIGIT | " ")+ ~ quote }
+number = { (ASCII_DIGIT | ".")+ }
+
+// // Functions
+args = { (string | number)* }
+
+libfuncnames = {
+    "print" |
+    "puts"
+}
+
+libfunc = { libfuncnames ~ "(" ~ (string|number)* ~ ")" }
+
+// Source File
+
+my_newline = { (comment ~ NEWLINE | NEWLINE) }
+
+file = {
+    SOI ~
+    ((comment|libfunc)? ~ my_newline)* ~
+    (EOI)?
+}

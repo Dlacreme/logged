@@ -1,7 +1,7 @@
 //! Handle the main loop of events. Also provide a helper to run a single query
 
 use std::io::{stdout, stdin, Write};
-use crate::result::Query;
+use crate::query::Query;
 use crate::log;
 
 /// Starts the REPL. It waits for a query on stdin and then display the results
@@ -11,7 +11,7 @@ pub fn start(target: &str) {
     while line != ".exit" {
         print_prompt(target);
         line = read_line();
-        log::debug(format!("Execute command {}", line));
+        log::debug(format!("Execute query '{}'", line));
         query = Query::new(String::from(target), line.clone());
         query = execute(query);
         print_result(query);
@@ -20,7 +20,7 @@ pub fn start(target: &str) {
 
 /// Execute a single query and display the result on stdin
 pub fn execute_once(target: &str, line: &str) {
-    log::debug(format!("Execute command {}", line));
+    log::debug(format!("Execute query '{}'", line));
     let mut query = Query::new(String::from(target), String::from(line));
     query = execute(query);
     print_result(query);

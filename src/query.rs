@@ -1,11 +1,14 @@
 //! Handle a query runtime
 
 use crate::error::Error;
+use crate::parser::{parse, ParsedQuery};
 
 /// Store details about a query and its result
 #[derive(Debug)]
 pub struct Query {
-    command: String,
+    target: String,
+    raw: String,
+    parsed: ParsedQuery,
     error: Option<Error>,
     rows: Vec<Row>,
 }
@@ -18,9 +21,12 @@ struct Row {
 
 impl Query {
     /// Create a new query
-    pub fn new(target: String, cmd: String) -> Self {
+    pub fn new(target: String, query: String) -> Self {
+        let parsed = parse(query.as_str());
         Self {
-            command: cmd,
+            target: target,
+            raw: query,
+            parsed: ParsedQuery::Undefined,
             error: None,
             rows: Vec::new(),
         }

@@ -5,9 +5,10 @@
 //! but we can also optimized the query system.
 //!
 //! Start: $> logged my_app
-//! Run a single command: $> logged my_app -i SELECT date, metadata FROM error
+//! Run a single query: $> logged my_app -i SELECT date, metadata FROM error
 //!
 
+#[macro_use] extern crate pest_derive;
 use clap::{Command, Arg, ArgMatches};
 
 const PACKAGE_NAME: &'static str = env!("CARGO_PKG_NAME");
@@ -16,7 +17,8 @@ const PACKAGE_AUTHORS: &'static str = env!("CARGO_PKG_AUTHORS");
 
 #[macro_use] mod log;
 mod repl;
-mod result;
+mod parser;
+mod query;
 mod error;
 
 /// We are looking for a few parameters before starting the command-line:
@@ -58,7 +60,7 @@ fn get_cli_matches() -> ArgMatches {
         .about("Modern database system for logs")
         .arg(Arg::new("target").index(1).required_unless_present("version"))
         .arg(Arg::new("debug").short('d').long("debug").help("Display all the logs - DEBUG PURPOSE"))
-        .arg(Arg::new("inline").short('i').long("inline").help("Run a single command").takes_value(true))
+        .arg(Arg::new("inline").short('i').long("inline").help("Run a single query").takes_value(true))
         .arg(Arg::new("version").short('v').long("version").help("Display version"))
         .get_matches()
 }
