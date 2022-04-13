@@ -6,7 +6,7 @@ Database system built specifically to store events
 
 ### Meta command
 
- - `@db |> %exit`: exit repl
+ - `@db |> %exit`: exit Logged command-line
 
 ### Insert event
 
@@ -38,4 +38,3 @@ SELECT (error, warning)
 ```
 SELECT TO DELETE info WHERE at < d'2019-01-01'
 ```
-

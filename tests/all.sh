@@ -1,0 +1,1 @@
+bash tests/insert.sh

@@ -6,13 +6,14 @@ use crate::log;
 
 /// Starts the REPL. It waits for a query on stdin and then display the results
 pub fn start(target: &str) {
-    let mut line: String = String::from("");
-    let mut query: Query;
-    while line != ".exit" {
+    let mut line: String = String::new();
+    let mut query: Query = Query::new(target, line);
+    while line != "@exit" {
+        query = reset_query();
         print_prompt(target);
-        line = read_line();
-        log::debug(format!("Execute query '{}'", line));
-        query = Query::new(String::from(target), line.clone());
+        line = read_line(line);
+        // log::debug(format!("Execute query '{}'", line));
+        query = Query::new(target, line.as_str());
         query = execute(query);
         print_result(query);
     }
@@ -21,13 +22,16 @@ pub fn start(target: &str) {
 /// Execute a single query and display the result on stdin
 pub fn execute_once(target: &str, line: &str) {
     log::debug(format!("Execute query '{}'", line));
-    let mut query = Query::new(String::from(target), String::from(line));
+    let mut query = Query::new(target, line);
     query = execute(query);
     print_result(query);
 }
 
-fn read_line() -> String {
-    let mut buffer = String::new();
+fn reset_query(query: Query, target: &str, line: &str) -> Query {
+
+}
+
+fn read_line(mut buffer: String) -> String {
     stdin().read_line(&mut buffer).unwrap();
     buffer
 }

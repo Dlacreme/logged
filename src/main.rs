@@ -20,6 +20,7 @@ mod repl;
 mod parser;
 mod query;
 mod error;
+mod event;
 
 /// We are looking for a few parameters before starting the command-line:
 /// - `version`: display the current version and exit

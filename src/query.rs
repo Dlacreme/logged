@@ -5,24 +5,24 @@ use crate::parser::{parse, ParsedQuery};
 
 /// Store details about a query and its result
 #[derive(Debug)]
-pub struct Query {
-    target: String,
-    raw: String,
+pub struct Query<'a> {
+    target: &'static str,
+    raw: &'a str,
     parsed: ParsedQuery,
     error: Option<Error>,
-    rows: Vec<Row>,
+    rows: Vec<Row<'a>>,
 }
 
 #[derive(Debug)]
-struct Row {
-    label: String,
-    value: String,
+struct Row<'a> {
+    label: &'a str,
+    value: &'a str,
 }
 
-impl Query {
+impl<'a> Query<'a> {
     /// Create a new query
-    pub fn new(target: String, query: String) -> Self {
-        let parsed = parse(query.as_str());
+    pub fn new(target: &'static str, query: &'a str) -> Self {
+        let parsed = parse(query);
         Self {
             target: target,
             raw: query,
